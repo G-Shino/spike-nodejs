@@ -1,0 +1,10 @@
+{
+  "name": "lesson-5",
+  "version": "1.0.0",
+  "main": "server.js",
+  "license": "MIT",
+  "scripts": {
+    "test": "echo \"Error: no test specifiec\" && exit 1",
+    "start": "nodemon server.js"
+  }
+}
