@@ -24,7 +24,10 @@ app.set("view engine", "ejs");
 // listen for requests
 
 // middleware & static files
+// publicフォルダをstaticなものとして読み込む
 app.use(express.static("public"));
+// formの情報を拾えるようにする req.bodyに入る
+app.use(express.urlencoded({ extended: true }));
 app.use(morgan("dev"));
 
 // mongoose and mongo sandbox routes
@@ -32,7 +35,7 @@ app.get("/add-blog", (req, res) => {
   const blog = new Blog({
     title: "new blog !!!",
     snippet: "about my new blog",
-    body: "more about my new blog",
+    body: "more about my new blog"
   });
 
   blog
@@ -96,8 +99,42 @@ app.get("/blogs", (req, res) => {
     });
 });
 
+app.post("/blogs", (req, res) => {
+  const blog = new Blog(req.body);
+  blog
+    .save()
+    .then((result) => {
+      res.redirect("blogs");
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+});
+
 app.get("/blogs/create", (req, res) => {
   res.render("create", { title: "Create a new Blog" });
+});
+
+app.get("/blogs/:id", (req, res) => {
+  const id = req.params.id;
+  Blog.findById(id)
+    .then((result) => {
+      res.render("details", { title: "Blog Details", blog: result });
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+});
+
+app.delete("/blogs/:id", (req, res) => {
+  const id = req.params.id;
+  Blog.findByIdAndDelete(id)
+    .then((result) => {
+      res.json({ redirect: "/blogs" });
+    })
+    .catch((err) => {
+      console.error(err);
+    });
 });
 
 // 404 page
