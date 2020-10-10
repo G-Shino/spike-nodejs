@@ -1,5 +1,6 @@
 const mangoose = require("mongoose");
 const { isEmail } = require("validator");
+const bcrypt = require("bcrypt");
 
 const userSchema = new mangoose.Schema({
   email: {
@@ -18,8 +19,11 @@ const userSchema = new mangoose.Schema({
 
 // fire a fucntion before doc saved to db
 // インスタンスをthisとするためアロー関数だとダメ
-userSchema.pre("save", function (next) {
+userSchema.pre("save", async function (next) {
   console.log("user about to be created & saved", this);
+  const salt = await bcrypt.genSalt();
+  console.log(salt);
+  this.password = await bcrypt.hash(this.password, salt);
   next();
 });
 
