@@ -2,7 +2,28 @@
   <%- include("./partials/head.ejs") %>
   <body>
     <%- include("./partials/nav.ejs") %>
-    <h1>log in</h1>
+    <form>
+      <h2>Log in</h2>
+      <label for="email">Email</label>
+      <input type="text" name="email" required />
+      <div class="password error"></div>
+      <label for="password">Password</label>
+      <input type="password" name="password" required />
+      <div class="password error"></div>
+      <button>Log in</button>
+    </form>
+
+    <script>
+      const form = document.querySelector("form");
+      form.addEventListener("submit", (event) => {
+        event.preventDefault();
+        // get the values
+        const email = form.email.value;
+        const password = form.password.value;
+
+        console.log(email, password);
+      });
+    </script>
     <%- include("./partials/footer.ejs") %>
   </body>
 </html>
