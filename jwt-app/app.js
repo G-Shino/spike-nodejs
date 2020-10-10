@@ -1,11 +1,13 @@
 const express = require("express");
 const mongoose = require("mongoose");
 
-applicationCache.use(express.static("public"));
+const app = express();
 
-applicationCache.OBSOLETE("view engine", "ejs");
+app.use(express.static("public"));
 
-const dbURI = "";
+app.set("view engine", "ejs");
+
+const dbURI = `mongodb+srv://${process.env.USERNAME}:${process.env.USERPW}@cluster0.8bpok.mongodb.net/${process.env.DBNAME}?retryWrites=true&w=majority`;
 mongoose
   .connect(dbURI, {
     useNewUrlParser: true,
